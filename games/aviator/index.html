@@ -1,0 +1,19 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Aviator Placeholder</title>
+    <style>body{background:#111;color:#eee;font-family:sans-serif}#m{font-size:48px;margin:40px}</style>
+  </head>
+  <body>
+    <h1>Aviator</h1>
+    <div id="m">1.00x</div>
+    <script>
+      const m = document.getElementById('m');
+      let x = 1.00;
+      setInterval(()=>{ x = Math.min(10, x + 0.01); m.textContent = x.toFixed(2)+'x'; }, 50);
+      const ws = new WebSocket((location.protocol==='https:'?'wss':'ws')+'://'+location.host+'/ws/games');
+      ws.onmessage = (ev)=>{ try{ const msg = JSON.parse(ev.data); if(msg.type==='round_resolved'){ x=1.00; } }catch{} };
+    </script>
+  </body>
+</html>
