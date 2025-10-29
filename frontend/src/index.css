@@ -9,6 +9,13 @@
 }
 
 @layer components {
+  .casino-bg {
+    background:
+      radial-gradient(1200px 800px at 70% -10%, rgba(0,212,255,0.06) 0%, rgba(0,212,255,0) 60%),
+      radial-gradient(900px 600px at -20% 30%, rgba(139,92,246,0.06) 0%, rgba(139,92,246,0) 60%),
+      #0b1220;
+  }
+
   .btn-primary {
     @apply bg-gradient-to-r from-neon-blue to-neon-purple text-white font-semibold py-2 px-4 rounded-lg transition-all duration-200 hover:shadow-lg hover:shadow-neon-blue/25;
   }
@@ -18,7 +25,7 @@
   }
   
   .card {
-    @apply bg-gray-800 rounded-xl p-6 border border-gray-700 shadow-lg;
+    @apply bg-gray-800/80 backdrop-blur rounded-xl p-6 border border-gray-700 shadow-lg;
   }
   
   .neon-border {
@@ -27,5 +34,9 @@
   
   .gradient-text {
     @apply bg-gradient-to-r from-neon-blue to-neon-purple bg-clip-text text-transparent;
+  }
+
+  .glass {
+    @apply bg-gray-800/70 backdrop-blur border border-gray-700 rounded-xl;
   }
 }

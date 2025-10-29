@@ -14,7 +14,7 @@ function App() {
     <Router>
       <WalletProvider>
         <SocketProvider>
-          <div className="min-h-screen bg-gray-900">
+          <div className="min-h-screen casino-bg">
             <Navbar />
             <main className="container mx-auto px-4 py-8">
               <Routes>

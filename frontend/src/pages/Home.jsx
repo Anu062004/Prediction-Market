@@ -71,10 +71,10 @@ const Home = () => {
         className="text-center py-12"
       >
         <h1 className="text-5xl font-bold gradient-text mb-4">
-          Ultra-Fast Prediction Markets
+          Prediction Markets & Casino
         </h1>
         <p className="text-xl text-gray-300 mb-8 max-w-2xl mx-auto">
-          Experience instant finality with Linera microchains. Create and resolve markets in minutes, not hours.
+          Trade probabilities and play Mines — all in one neon casino experience powered by Linera microchains.
         </p>
         <div className="flex justify-center space-x-4">
           <Link to="/create" className="btn-primary text-lg px-8 py-3">
