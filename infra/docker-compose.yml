@@ -24,6 +24,12 @@ services:
       DATABASE_URL: postgresql://user:pass@db:5432/pmarket
       REDIS_URL: redis://redis:6379/0
       JWT_SECRET: change_me
+      LINERA_BIN: ${LINERA_BIN}
+      LINERA_NODE_URL: ${LINERA_NODE_URL}
+      LINERA_WALLET: ${LINERA_WALLET}
+      LINERA_KEYSTORE: ${LINERA_KEYSTORE}
+      LINERA_CHAIN_ID: ${LINERA_CHAIN_ID}
+      TOKEN_APP_ID: ${TOKEN_APP_ID}
     depends_on: [db, redis]
     ports:
       - "3000:3000"
@@ -33,6 +39,12 @@ services:
     environment:
       DATABASE_URL: postgresql://user:pass@db:5432/pmarket
       WALLET_PORT: 3010
+      LINERA_BIN: ${LINERA_BIN}
+      LINERA_NODE_URL: ${LINERA_NODE_URL}
+      LINERA_WALLET: ${LINERA_WALLET}
+      LINERA_KEYSTORE: ${LINERA_KEYSTORE}
+      LINERA_CHAIN_ID: ${LINERA_CHAIN_ID}
+      TOKEN_APP_ID: ${TOKEN_APP_ID}
     depends_on: [db]
     ports:
       - "3010:3010"

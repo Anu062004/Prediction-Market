@@ -58,6 +58,30 @@ docker compose -f infra/docker-compose.yml up --build -d
 npm --prefix backend-api test
 ```
 
+## Linera Setup (automated)
+1. Install CLI (Linux/WSL):
+```bash
+bash scripts/linera/setup_testnet.sh
+```
+2. Claim a microchain and get wallet/keystore per the manual: [linera.dev](https://linera.dev/)
+3. Export env and publish token app:
+```bash
+export LINERA_NODE_URL=...
+export LINERA_WALLET=...
+export LINERA_KEYSTORE=...
+export LINERA_CHAIN_ID=...
+export LINERA_BIN=linera
+# build contracts if you add a token contract here; otherwise set TOKEN_APP_ID from the publish step
+bash scripts/linera/publish_token.sh
+export TOKEN_APP_ID=<printed_app_id>
+```
+4. Bring up stack (reads env via compose):
+```bash
+cd infra && docker compose up --build -d
+```
+
+See `docs/linera-integration.md` for details.
+
 ## 🏗️ Development
 
 See individual README files in each directory for detailed setup instructions.
