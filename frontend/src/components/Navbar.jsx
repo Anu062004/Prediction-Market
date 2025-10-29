@@ -60,6 +60,14 @@ const Navbar = () => {
             >
               Wallet
             </Link>
+            <a
+              href="http://localhost/mines/"
+              target="_blank"
+              rel="noreferrer"
+              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-300 hover:text-white`}
+            >
+              Games
+            </a>
           </div>
 
           {/* Status Indicators & Wallet */}
