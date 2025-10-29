@@ -131,6 +131,31 @@ async def record_outcome(market_id: str, winning_outcome: int, final_odds: Dict[
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error recording outcome: {str(e)}")
 
+class RecommendRequest(BaseModel):
+    userId: str
+    balance: float
+    lastN: int = 10
+
+@app.post("/recommend")
+async def recommend(req: RecommendRequest):
+    # Baseline recommender: allocate small stakes across games with simple heuristics
+    games = [
+        {"game": "mines", "weight": 0.5},
+        {"game": "aviator", "weight": 0.5}
+    ]
+    total_w = sum(g["weight"] for g in games)
+    max_total = req.balance
+    recs = []
+    for g in games:
+        stake = min(max_total * (g["weight"] / total_w) * 0.1, max_total)  # cap 10%
+        recs.append({
+            "game": g["game"],
+            "recommendedStake": round(stake, 2),
+            "confidence": 0.6,
+            "explanation": "Baseline equal-weight recommendation"
+        })
+    return recs
+
 @app.get("/health")
 async def health_check():
     return {"status": "healthy", "timestamp": datetime.now().isoformat()}
