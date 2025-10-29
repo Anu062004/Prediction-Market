@@ -11,9 +11,11 @@ const OddsService = require('./services/oddsService');
 
 const app = express();
 const server = http.createServer(app);
+const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:3000";
 const io = socketIo(server, {
   cors: {
-    origin: process.env.FRONTEND_URL || "http://localhost:3000",
+    // Allow all localhost ports and any FRONTEND_URL; safe for local dev
+    origin: "*",
     methods: ["GET", "POST"]
   }
 });
@@ -25,7 +27,7 @@ app.use(express.json());
 // Services
 const marketService = new MarketService();
 const lineraService = new LineraService();
-const oddsService = new OddsService();
+const oddsService = new OddsService(marketService);
 
 // Routes
 app.get('/api/health', (req, res) => {

@@ -1,23 +1,21 @@
 const axios = require('axios');
 
 class OddsService {
-  constructor() {
+  constructor(marketService) {
     this.aiEngineUrl = process.env.AI_ENGINE_URL || 'http://localhost:8001';
     this.marketOdds = new Map();
+    this.marketService = marketService; // share same instance
   }
 
   async updateOdds(marketId) {
     try {
-      // Get market data from market service
-      const MarketService = require('./marketService');
-      const marketService = new MarketService();
-      
-      const market = await marketService.getMarket(marketId);
+      // Get market data from shared market service
+      const market = await this.marketService.getMarket(marketId);
       if (!market) {
         throw new Error('Market not found');
       }
 
-      const bets = await marketService.getMarketBets(marketId);
+      const bets = await this.marketService.getMarketBets(marketId);
       
       // Calculate current betting amounts per outcome
       const currentBets = {};
@@ -64,9 +62,7 @@ class OddsService {
       }
       
       // Fallback to equal odds
-      const MarketService = require('./marketService');
-      const marketService = new MarketService();
-      const market = await marketService.getMarket(marketId);
+      const market = await this.marketService.getMarket(marketId);
       
       if (market) {
         const equalOdds = market.outcomes.map(() => 1.0 / market.outcomes.length);
