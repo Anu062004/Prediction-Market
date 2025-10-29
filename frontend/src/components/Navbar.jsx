@@ -61,7 +61,7 @@ const Navbar = () => {
               Wallet
             </Link>
             <a
-              href="http://localhost/mines/"
+              href="http://localhost:5173/"
               target="_blank"
               rel="noreferrer"
               className={`px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-300 hover:text-white`}
