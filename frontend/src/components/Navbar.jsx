@@ -60,14 +60,14 @@ const Navbar = () => {
             >
               Wallet
             </Link>
-            <Link
-              to="/mines"
-              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors ${
-                isActive('/mines') ? 'text-neon-blue border-b-2 border-neon-blue' : 'text-gray-300 hover:text-white'
-              }`}
+            <a
+              href="http://localhost:5173/"
+              target="_blank"
+              rel="noreferrer"
+              className={`px-3 py-2 rounded-md text-sm font-medium transition-colors text-gray-300 hover:text-white`}
             >
               Games
-            </Link>
+            </a>
           </div>
 
           {/* Status Indicators & Wallet */}

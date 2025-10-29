@@ -8,7 +8,6 @@ import Home from './pages/Home'
 import MarketDetail from './pages/MarketDetail'
 import Wallet from './pages/Wallet'
 import CreateMarket from './pages/CreateMarket'
-import Mines from './pages/Mines'
 
 function App() {
   return (
@@ -23,7 +22,6 @@ function App() {
                 <Route path="/market/:id" element={<MarketDetail />} />
                 <Route path="/wallet" element={<Wallet />} />
                 <Route path="/create" element={<CreateMarket />} />
-                <Route path="/mines" element={<Mines />} />
               </Routes>
             </main>
             <Toaster 
