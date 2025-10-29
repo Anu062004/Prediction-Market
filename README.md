@@ -1,4 +1,4 @@
-# FlashBet + Games/Wallet/AI Extension
+# Glint — Prediction Markets & Casino
 
 A full-stack prediction market built on Linera microchains with instant finality and AI-powered odds.
 
