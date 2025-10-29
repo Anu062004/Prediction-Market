@@ -7,7 +7,7 @@
     <style>
       :root { --bg:#0b0f14; --panel:#121923; --text:#e6eef8; --muted:#8aa0b2; --accent:#29b6f6; --danger:#ef5350; --success:#66bb6a; }
       html,body,#app{height:100%;margin:0}
-      body{background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
+      body{background:radial-gradient(1200px 800px at 70% -10%, #12304a 0%, transparent 60%), var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial}
       .hud{position:fixed;top:0;left:0;right:0;backdrop-filter: blur(6px);background:rgba(18,25,35,.7);border-bottom:1px solid #1f2a36}
       .wrap{max-width:1000px;margin:0 auto;padding:12px 16px;display:flex;gap:16px;align-items:center;justify-content:space-between}
       .group{display:flex;gap:12px;align-items:center}
@@ -15,14 +15,17 @@
       .label{font-size:12px;color:var(--muted)}
       .value{font-weight:700}
       input[type=number]{background:#0f151d;color:var(--text);border:1px solid #223243;border-radius:8px;padding:8px 10px;width:120px}
+      .small{width:100px}
       button{border:0;border-radius:10px;padding:10px 14px;font-weight:700;cursor:pointer}
       .primary{background:var(--accent);color:#061018}
       .danger{background:var(--danger);color:#fff}
       .success{background:var(--success);color:#062212}
       .ghost{background:#18232f;color:var(--text)}
-      .sp{height:64px}
+      .sp{height:72px}
       .toast{position:fixed;right:16px;bottom:16px;background:#101720;border:1px solid #203041;color:#cfe3f7;padding:10px 14px;border-radius:10px;display:none}
       .grid-note{position:fixed;left:16px;bottom:16px;color:var(--muted);font-size:12px}
+      #app{display:flex;align-items:center;justify-content:center;padding-top:12px}
+      .pill{background:linear-gradient(180deg,#0f2433,#0a1822);border:1px solid #1f2a36;border-radius:999px;padding:8px 14px;color:#8fd3ff;font-weight:800;letter-spacing:.5px}
     </style>
   </head>
   <body>
@@ -41,11 +44,16 @@
             <div class="label">Mines</div>
             <input id="mines" type="number" min="1" max="10" step="1" value="5" />
           </div>
+          <div class="panel">
+            <div class="label">Auto Cashout</div>
+            <input id="auto" class="small" type="number" min="1.01" step="0.01" value="2.00" />
+          </div>
         </div>
         <div class="group">
           <button id="start" class="primary">Start Round</button>
           <button id="cashout" class="success" disabled>Cash Out</button>
           <button id="reset" class="ghost">Reset</button>
+          <div class="pill">Multiplier: <span id="mult">x1.00</span></div>
         </div>
       </div>
     </div>

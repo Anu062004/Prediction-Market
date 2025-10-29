@@ -8,10 +8,10 @@ function randomInt(max: number) {
 }
 
 const GRID = 5
-const TILE_SIZE = 80
-const GAP = 8
+const TILE_SIZE = 96
+const GAP = 10
 
-type Tile = { r: number, c: number, rect: Phaser.GameObjects.Rectangle, revealed: boolean, mine: boolean }
+type Tile = { r: number, c: number, rect: Phaser.GameObjects.Rectangle, label: Phaser.GameObjects.Text, revealed: boolean, mine: boolean }
 
 type RoundState = {
   active: boolean
@@ -20,6 +20,7 @@ type RoundState = {
   minesCount: number
   multiplier: number
   stake: number
+  autoCash: number
 }
 
 const state: RoundState = {
@@ -28,7 +29,8 @@ const state: RoundState = {
   minesSet: new Set(),
   minesCount: 5,
   multiplier: 1,
-  stake: 0
+  stake: 0,
+  autoCash: 2
 }
 
 function getBalance(): number {
@@ -50,13 +52,20 @@ function toast(msg: string) {
 }
 
 class MinesScene extends Phaser.Scene {
-  gridOriginX = 100
-  gridOriginY = 120
+  gridOriginX = 0
+  gridOriginY = 140
 
   create() {
     setBalance(getBalance())
+    this.recomputeGridOrigin()
     this.drawGrid()
     this.bindUI()
+  }
+
+  recomputeGridOrigin() {
+    const w = this.scale.width
+    const gridW = GRID * TILE_SIZE + (GRID - 1) * GAP
+    this.gridOriginX = Math.floor((w - gridW) / 2)
   }
 
   bindUI() {
@@ -64,6 +73,7 @@ class MinesScene extends Phaser.Scene {
     const cashout = document.getElementById('cashout') as HTMLButtonElement
     const reset = document.getElementById('reset') as HTMLButtonElement
     const mines = document.getElementById('mines') as HTMLInputElement
+    const auto = document.getElementById('auto') as HTMLInputElement
 
     start.onclick = () => this.startRound()
     cashout.onclick = () => this.cashOut()
@@ -73,6 +83,11 @@ class MinesScene extends Phaser.Scene {
       mines.value = String(m)
       state.minesCount = m
       if (!state.active) this.resetRound(false)
+    }
+    auto.onchange = () => {
+      const v = Math.max(1.01, parseFloat(auto.value || '2'))
+      auto.value = v.toFixed(2)
+      state.autoCash = v
     }
   }
 
@@ -140,8 +155,12 @@ class MinesScene extends Phaser.Scene {
       for (let c = 0; c < GRID; c++) {
         const x = baseX + c * (TILE_SIZE + GAP)
         const y = baseY + r * (TILE_SIZE + GAP)
-        const rect = this.add.rectangle(x, y, TILE_SIZE, TILE_SIZE, 0x26323f).setInteractive()
-        const tile: Tile = { r, c, rect, revealed: false, mine: false }
+        const rect = this.add.rectangle(x, y, TILE_SIZE, TILE_SIZE, 0x22303d).setInteractive()
+        rect.setStrokeStyle(2, 0x3ad1ff, 0.25)
+        rect.on('pointerover', () => { if (!state.active || (state.tiles.find(t=>t.rect===rect)?.revealed)) return; rect.setStrokeStyle(3, 0x3ad1ff, 0.8) })
+        rect.on('pointerout', () => { rect.setStrokeStyle(2, 0x3ad1ff, 0.25) })
+        const label = this.add.text(x - 10, y - 16, '', { fontFamily: 'system-ui, -apple-system, Segoe UI, Roboto', fontSize: '28px' })
+        const tile: Tile = { r, c, rect, label, revealed: false, mine: false }
         rect.on('pointerdown', () => this.onTile(tile))
         state.tiles.push(tile)
       }
@@ -155,23 +174,36 @@ class MinesScene extends Phaser.Scene {
     const key = `${tile.r},${tile.c}`
     const isMine = state.minesSet.has(key)
     if (isMine) {
-      tile.rect.fillColor = 0x8b0000
+      tile.rect.fillColor = 0x3d0f14
+      tile.label.setText('💣')
+      tile.label.setColor('#ff6b6b')
+      this.tweens.add({ targets: [tile.rect, tile.label], angle: { from: -6, to: 6 }, yoyo: true, repeat: 4, duration: 70 })
       toast(`Boom! Lost ${state.stake.toFixed(2)}`)
       this.endRound()
       return
     }
 
-    tile.rect.fillColor = 0x2e8b57
+    tile.rect.fillColor = 0x123b2b
+    tile.label.setText('💎')
+    tile.label.setColor('#7fffd4')
     // Simple multiplier growth per safe click based on mines density
     const growth = Math.max(0.05, Math.min(0.35, state.minesCount / 20))
     state.multiplier = parseFloat((state.multiplier * (1 + growth)).toFixed(3))
+    const multEl = document.getElementById('mult')!
+    multEl.textContent = `x${state.multiplier.toFixed(2)}`
+    multEl.animate([{ transform: 'scale(1)' }, { transform: 'scale(1.15)' }, { transform: 'scale(1)' }], { duration: 220 })
+
+    // Auto cashout if target met
+    if (state.multiplier >= state.autoCash) {
+      this.cashOut()
+    }
   }
 }
 
 new Phaser.Game({
   type: Phaser.AUTO,
-  width: 1000,
-  height: 720,
+  width: 1200,
+  height: 760,
   backgroundColor: '#0b0f14',
   parent: 'app',
   scene: [MinesScene]
